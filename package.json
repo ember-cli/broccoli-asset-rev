@@ -1,0 +1,30 @@
+{
+  "name": "broccoli-asset-rev",
+  "version": "0.0.1",
+  "description": "broccoli asset revisions (fingerprint)",
+  "main": "lib/asset-rev.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rickharrison/broccoli-asset-rev"
+  },
+  "keywords": [
+    "broccoli",
+    "asset",
+    "rev",
+    "cloudfront",
+    "cdn"
+  ],
+  "author": "Rick Harrison",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rickharrison/broccoli-asset-rev/issues"
+  },
+  "homepage": "https://github.com/rickharrison/broccoli-asset-rev",
+  "dependencies": {
+    "broccoli-filter": "~0.1.6",
+    "rsvp": "~3.0.6"
+  }
+}
