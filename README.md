@@ -22,4 +22,5 @@ var assetTree = assetRev(tree, {
 ## Options
 
   - `fingerprintExtensions` - Default: `['js', 'css', 'png']` - The file types to add md5 checksums.
+  - `fingerprintExclude` - Default: `[]` - An array of strings. If a filename contains any item in the exclude array, it will not be fingerprinted.
   - `replaceExtensions` - Default: `['html', 'css']` - The file types to replace source code with new checksum file names.
