@@ -1,6 +1,6 @@
 {
   "name": "broccoli-asset-rev",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "broccoli asset revisions (fingerprint)",
   "main": "lib/asset-rev.js",
   "scripts": {
@@ -12,8 +12,10 @@
   },
   "keywords": [
     "broccoli",
+    "broccoli-plugin",
     "asset",
     "rev",
+    "fingerprint",
     "cloudfront",
     "cdn"
   ],
