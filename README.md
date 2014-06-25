@@ -28,18 +28,18 @@ npm install broccoli-asset-rev --save-dev
 var assetRev = require('broccoli-asset-rev');
 
 var assetTree = assetRev(tree, {
-  fingerprintExtensions: ['js', 'css', 'png', 'jpg', 'gif'],
-  fingerprintExclude: ['fonts/169929'],
+  extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+  exclude: ['fonts/169929'],
   replaceExtensions: ['html', 'js', 'css'],
-  prependPath: 'https://subdomain.cloudfront.net/'
+  prepend: 'https://subdomain.cloudfront.net/'
 });
 ```
 
 ## Options
 
-  - `fingerprintExtensions` - Default: `['js', 'css', 'png']` - The file types to add md5 checksums.
-  - `fingerprintExclude` - Default: `[]` - An array of strings. If a filename contains any item in the exclude array, it will not be fingerprinted.
+  - `extensions` - Default: `['js', 'css', 'png']` - The file types to add md5 checksums.
+  - `exclude` - Default: `[]` - An array of strings. If a filename contains any item in the exclude array, it will not be fingerprinted.
   - `replaceExtensions` - Default: `['html', 'css']` - The file types to replace source code with new checksum file names.
-  - `prependPath` - Default: `''` - A string to prepend to all of the assets. Useful for CDN urls like `https://subdomain.cloudfront.net/`
-  - `GenerateRailsManifest` - Default: none - If true, will generate a `manifest.json` to be used by Sprockets for the Rails Asset Pipeline
+  - `prepend` - Default: `''` - A string to prepend to all of the assets. Useful for CDN urls like `https://subdomain.cloudfront.net/`
+  - `generateRailsManifest` - Default: none - If true, will generate a `manifest.json` to be used by Sprockets for the Rails Asset Pipeline
   - `customHash` - Default: none - If defined, will be appended to filename instead of a md5 checksum.
