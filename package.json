@@ -3,6 +3,7 @@
   "version": "0.0.9",
   "description": "broccoli asset revisions (fingerprint)",
   "main": "lib/asset-rev.js",
+  "ember-addon-main": "lib/ember-cli-main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,7 +18,8 @@
     "rev",
     "fingerprint",
     "cloudfront",
-    "cdn"
+    "cdn",
+    "ember-addon"
   ],
   "author": "Rick Harrison",
   "license": "MIT",
