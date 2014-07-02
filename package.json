@@ -1,6 +1,6 @@
 {
   "name": "broccoli-asset-rev",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "broccoli asset revisions (fingerprint)",
   "main": "lib/asset-rev.js",
   "ember-addon-main": "lib/ember-cli-main.js",
