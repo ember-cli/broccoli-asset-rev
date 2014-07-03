@@ -1,6 +1,6 @@
 {
   "name": "broccoli-asset-rev",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "broccoli asset revisions (fingerprint)",
   "main": "lib/asset-rev.js",
   "ember-addon-main": "lib/ember-cli-main.js",
@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/rickharrison/broccoli-asset-rev",
   "dependencies": {
+    "broccoli-asset-rewrite": "0.0.1",
     "broccoli-filter": "~0.1.6",
     "rsvp": "~3.0.6"
   }
