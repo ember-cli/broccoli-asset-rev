@@ -1,7 +1,8 @@
 {
   "name": "broccoli-asset-rev",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "broccoli asset revisions (fingerprint)",
+  "main": "lib/asset-rev.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
