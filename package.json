@@ -29,6 +29,7 @@
   "dependencies": {
     "broccoli-asset-rewrite": "0.0.1",
     "broccoli-filter": "~0.1.6",
-    "rsvp": "~3.0.6"
+    "rsvp": "~3.0.6",
+    "fs-extra": "^0.11.1"
   }
 }
