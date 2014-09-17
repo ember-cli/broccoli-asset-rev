@@ -43,3 +43,4 @@ var assetTree = assetRev(tree, {
   - `prepend` - Default: `''` - A string to prepend to all of the assets. Useful for CDN urls like `https://subdomain.cloudfront.net/`
   - `generateRailsManifest` - Default: none - If true, will generate a `manifest.json` to be used by Sprockets for the Rails Asset Pipeline
   - `customHash` - Default: none - If defined, will be appended to filename instead of a md5 checksum.
+  - `manifestDest` - Default: none - function that will returns the destination path for the manifest file (takes destDir and hash as parameter)
