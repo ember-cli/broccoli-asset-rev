@@ -1,6 +1,6 @@
 {
   "name": "broccoli-asset-rev",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "broccoli asset revisions (fingerprint)",
   "main": "lib/asset-rev.js",
   "scripts": {
