@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/rickharrison/broccoli-asset-rev",
   "dependencies": {
-    "broccoli-asset-rewrite": "0.0.1",
+    "broccoli-asset-rewrite": "git+ssh://git@github.com:taras/broccoli-asset-rewrite.git#4ec0021df923476108d524a30fa59228babeac2d",
     "broccoli-filter": "~0.1.6",
     "rsvp": "~3.0.6",
     "fs-extra": "^0.11.1"
