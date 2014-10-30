@@ -37,10 +37,28 @@ var assetTree = assetRev(tree, {
 
 ## Options
 
-  - `extensions` - Default: `['js', 'css', 'png', 'jpg', 'gif']` - The file types to add md5 checksums.
+  - `extensions` - Default: `['js', 'css', 'png']` - The file types to add md5 checksums.
   - `exclude` - Default: `[]` - An array of strings. If a filename contains any item in the exclude array, it will not be fingerprinted.
-  - `replaceExtensions` - Default: `['html', 'css', 'js']` - The file types to replace source code with new checksum file names.
+  - `replaceExtensions` - Default: `['html', 'css']` - The file types to replace source code with new checksum file names.
   - `prepend` - Default: `''` - A string to prepend to all of the assets. Useful for CDN urls like `https://subdomain.cloudfront.net/`
   - `generateRailsManifest` - Default: none - If true, will generate a `manifest.json` to be used by Sprockets for the Rails Asset Pipeline
   - `customHash` - Default: none - If defined, will be appended to filename instead of a md5 checksum.
-  - `enabled` - Default: true for production - Set this to false to turn off in production.
+
+## Ember CLI addon usage
+
+```js
+var app = new EmberApp({
+  fingerprint: {
+    exclude: ['fonts/169929'],
+    prepend: 'https://sudomain.cloudfront.net/'
+  }
+});
+```
+
+## Ember CLI addon options
+
+  - `enabled` - Default: `app.env === 'production'` - Boolean. Enables fingerprinting if true. **True by default if current environment is production.**
+  - `exclude` - Default: `[]` - An array of strings. If a filename contains any item in the exclude array, it will not be fingerprinted.
+  - `extensions` - Default: `['js', 'css', 'png', 'jpg', 'gif']` - The file types to add md5 checksums.
+  - `prepend` - Default: `''` - A string to prepend to all of the assets. Useful for CDN urls like `https://subdomain.cloudfront.net/`
+  - `replaceExtensions` - Default: `['html', 'css', 'js']` - The file types to replace source code with new checksum file names.
