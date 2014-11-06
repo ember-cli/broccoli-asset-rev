@@ -1,5 +1,4 @@
 var path = require('path');
-var fs   = require('fs');
 
 var assetRev = require('./lib/asset-rev');
 
