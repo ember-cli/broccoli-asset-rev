@@ -61,4 +61,19 @@ describe('broccoli-asset-rev', function() {
       confirmOutput(graph.directory, sourcePath + '/output');
     });
   });
+
+  it('will prepend if set', function () {
+    var sourcePath = 'tests/fixtures/prepend';
+
+    var tree = assetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      replaceExtensions: ['html', 'js', 'css'],
+      prepend: 'https://foobar.cloudfront.net/'
+    });
+
+    builder = new broccoli.Builder(tree);
+    return builder.build().then(function(graph) {
+      confirmOutput(graph.directory, sourcePath + '/output');
+    });
+  });
 });
