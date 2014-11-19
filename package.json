@@ -4,7 +4,7 @@
   "description": "broccoli asset revisions (fingerprint)",
   "main": "lib/asset-rev.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests"
   },
   "repository": {
     "type": "git",
@@ -30,5 +30,11 @@
     "broccoli-asset-rewrite": "^1.0.0",
     "broccoli-filter": "~0.1.6",
     "rsvp": "~3.0.6"
+  },
+  "devDependencies": {
+    "broccoli": "^0.13.3",
+    "broccoli-merge-trees": "^0.2.1",
+    "mocha": "^2.0.1",
+    "walk-sync": "^0.1.3"
   }
 }
