@@ -42,7 +42,7 @@ var assetTree = assetRev(tree, {
   - `replaceExtensions` - Default: `['html', 'css']` - The file types to replace source code with new checksum file names.
   - `prepend` - Default: `''` - A string to prepend to all of the assets. Useful for CDN urls like `https://subdomain.cloudfront.net/`
   - `generateRailsManifest` - Default: none - If true, will generate a `manifest.json` to be used by Sprockets for the Rails Asset Pipeline
-  - `customHash` - Default: none - If defined, will be appended to filename instead of a md5 checksum.
+  - `customHash` - Default: none - If set, overrides the md5 checksum calculation with the result of calling `customHash(buffer)`. If it is not a `function`, `customHash` is used as the hash value.
 
 ## Ember CLI addon usage
 

@@ -1,5 +1,6 @@
 var fs       = require('fs');
 var path     = require('path');
+var crypto   = require('crypto');
 var assert   = require('assert');
 var walkSync = require('walk-sync');
 var broccoli = require('broccoli');
@@ -69,6 +70,40 @@ describe('broccoli-asset-rev', function() {
       extensions: ['js', 'css', 'png', 'jpg', 'gif'],
       replaceExtensions: ['html', 'js', 'css'],
       prepend: 'https://foobar.cloudfront.net/'
+    });
+
+    builder = new broccoli.Builder(tree);
+    return builder.build().then(function(graph) {
+      confirmOutput(graph.directory, sourcePath + '/output');
+    });
+  });
+
+  it('uses customHash string value', function(){
+    var sourcePath = 'tests/fixtures/customHash-simple';
+
+    var tree = assetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      replaceExtensions: ['html', 'js', 'css'],
+      customHash: 'test'
+    });
+
+    builder = new broccoli.Builder(tree);
+    return builder.build().then(function(graph) {
+      confirmOutput(graph.directory, sourcePath + '/output');
+    });
+  });
+
+  it('uses customHash function value', function(){
+    var sourcePath = 'tests/fixtures/customHash-function';
+
+    var tree = assetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      replaceExtensions: ['html', 'js', 'css'],
+      customHash: function(buf) {
+        var sha1 = crypto.createHash('sha1');
+        sha1.update(buf);
+        return sha1.digest('hex');
+      }
     });
 
     builder = new broccoli.Builder(tree);
