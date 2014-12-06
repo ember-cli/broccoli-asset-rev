@@ -78,6 +78,20 @@ describe('broccoli-asset-rev', function() {
     });
   });
 
+  it('replaces the correct match for the file extension', function () {
+    var sourcePath = 'tests/fixtures/extensions';
+
+    var tree = assetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'woff', 'woff2', 'ttf', 'svg', 'eot'],
+      replaceExtensions: ['html', 'js' ,'css']
+    });
+
+    builder = new broccoli.Builder(tree);
+    return builder.build().then(function (graph) {
+      confirmOutput(graph.directory, sourcePath + '/output');
+    });
+  });
+
   it('uses customHash string value', function(){
     var sourcePath = 'tests/fixtures/customHash-simple';
 
