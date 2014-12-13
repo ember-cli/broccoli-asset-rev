@@ -8,7 +8,7 @@ module.exports = {
     var defaultOptions = {
       enabled: this.app.env === 'production',
       exclude: [],
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
       prepend: '',
       replaceExtensions: ['html', 'css', 'js']
     }
