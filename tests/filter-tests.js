@@ -67,7 +67,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/prepend';
 
     var tree = assetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'eot', 'woff2', 'woff', 'ttf', 'svg'],
       replaceExtensions: ['html', 'js', 'css'],
       prepend: 'https://foobar.cloudfront.net/'
     });
