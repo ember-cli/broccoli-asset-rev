@@ -37,7 +37,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/basic';
 
     var tree = assetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css']
     });
 
@@ -53,7 +53,7 @@ describe('broccoli-asset-rev', function() {
     var merged = mergeTrees([sourcePath + '/input']);
 
     var tree = assetRev(merged, {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css']
     });
 
@@ -67,7 +67,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/prepend';
 
     var tree = assetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css'],
       prepend: 'https://foobar.cloudfront.net/'
     });
