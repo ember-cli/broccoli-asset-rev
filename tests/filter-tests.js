@@ -78,6 +78,37 @@ describe('broccoli-asset-rev', function() {
     });
   });
 
+  it('skips fingerprint and prepends when set and customHash is null', function () {
+    var sourcePath = 'tests/fixtures/prepend';
+
+    var tree = assetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
+      replaceExtensions: ['html', 'js', 'css'],
+      prepend: 'https://foobar.cloudfront.net/',
+      customHash: null
+    });
+
+    builder = new broccoli.Builder(tree);
+    return builder.build().then(function(graph) {
+      confirmOutput(graph.directory, sourcePath + '/output-customHash-null');
+    });
+  });
+
+  it('skips fingerprint when customHash is null', function () {
+    var sourcePath = 'tests/fixtures/customHash-null';
+
+    var tree = assetRev(sourcePath + '/input-output', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
+      replaceExtensions: ['html', 'js', 'css'],
+      customHash: null
+    });
+
+    builder = new broccoli.Builder(tree);
+    return builder.build().then(function(graph) {
+      confirmOutput(graph.directory, sourcePath + '/input-output');
+    });
+  });
+
   it('replaces the correct match for the file extension', function () {
     var sourcePath = 'tests/fixtures/extensions';
 
