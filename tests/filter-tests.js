@@ -26,6 +26,12 @@ function confirmOutput(actualPath, expectedPath) {
   });
 }
 
+function confirmPathPresent(list, pattern) {
+  return list.some(function(item) {
+    return item.search(pattern) !== -1;
+  });
+}
+
 describe('broccoli-asset-rev', function() {
   afterEach(function() {
     if (builder) {
@@ -60,6 +66,43 @@ describe('broccoli-asset-rev', function() {
     builder = new broccoli.Builder(tree);
     return builder.build().then(function(graph) {
       confirmOutput(graph.directory, sourcePath + '/output');
+    });
+  });
+
+  it('generates a rails-style asset manifest if requested', function () {
+    var sourcePath = 'tests/fixtures/basic';
+
+    var tree = assetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      generateRailsManifest: true,
+      replaceExtensions: ['html', 'js', 'css']
+    });
+
+    builder = new broccoli.Builder(tree);
+    return builder.build().then(function(graph) {
+      var actualFiles = walkSync(graph.directory);
+      var pathPresent = confirmPathPresent(actualFiles, /manifest-[0-9a-f]{32}.json/);
+
+      assert(pathPresent, "manifest file not found");
+    });
+  });
+
+  it("doesn't fingerprint rails-style manifest if excluded", function () {
+    var sourcePath = 'tests/fixtures/basic';
+
+    var tree = assetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      exclude: ['manifest.json'],
+      generateRailsManifest: true,
+      replaceExtensions: ['html', 'js', 'css']
+    });
+
+    builder = new broccoli.Builder(tree);
+    return builder.build().then(function(graph) {
+      var actualFiles = walkSync(graph.directory);
+      var pathPresent = confirmPathPresent(actualFiles, /manifest.json/);
+
+      assert(pathPresent, "manifest file not found");
     });
   });
 

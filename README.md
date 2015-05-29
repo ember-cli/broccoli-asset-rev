@@ -41,7 +41,7 @@ var assetTree = assetRev(tree, {
   - `exclude` - Default: `[]` - An array of strings. If a filename contains any item in the exclude array, it will not be fingerprinted.
   - `replaceExtensions` - Default: `['html', 'css', 'js']` - The file types to replace source code with new checksum file names.
   - `prepend` - Default: `''` - A string to prepend to all of the assets. Useful for CDN urls like `https://subdomain.cloudfront.net/`
-  - `generateRailsManifest` - Default: none - If true, will generate a `manifest.json` to be used by Sprockets for the Rails Asset Pipeline
+  - `generateRailsManifest` - Default: none - If true, will generate a `manifest.json` to be used by Sprockets for the Rails Asset Pipeline. The manifest will be fingerprinted by default but this can be avoided by adding `'manifest.json'` to the `exclude` list.
   - `customHash` - Default: none - If set, overrides the md5 checksum calculation with the result of calling `customHash(buffer)`. If it is not a `function`, `customHash` is used as the hash value.
   - `generateAssetMap` - Default: false. If true, will generate a `assetMap.json` file in a `assets` directory on the output tree. This file contains a mapping of the original asset name to the fingerprinted asset, like the following:
 
