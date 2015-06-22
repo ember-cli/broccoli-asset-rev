@@ -53,6 +53,7 @@ var assetTree = assetRev(tree, {
 	}
 }
 ```
+ - `ignore` - Default: `[]` - An array of strings.  If a filename contains any item in the ignore array, the contents of the file will not be processed for fingerprinting.
 
 ## Ember CLI addon usage
 
