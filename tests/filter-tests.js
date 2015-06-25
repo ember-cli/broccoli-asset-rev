@@ -5,9 +5,8 @@ var assert   = require('assert');
 var walkSync = require('walk-sync');
 var broccoli = require('broccoli');
 var mergeTrees = require('broccoli-merge-trees');
-
-var assetRev  = require('../lib/asset-rev');
-
+var assetRev = require('../lib/asset-rev');
+var sinon    = require('sinon');
 var builder;
 
 function confirmOutput(actualPath, expectedPath) {
@@ -197,6 +196,57 @@ describe('broccoli-asset-rev', function() {
     builder = new broccoli.Builder(tree);
     return builder.build().then(function(graph) {
       confirmOutput(graph.directory, sourcePath + '/output');
+    });
+  });
+
+  it('creates a sprockets-style manifest', function(){
+    var sourcePath = 'tests/fixtures/manifest';
+    var date  = new Date(Date.UTC(2015, 0, 1, 8));
+    var original = fs.statSync;
+
+    sinon.stub(fs, 'statSync', function (path) {
+      var stats = original.apply(this, arguments);
+      stats.mtime = date;
+
+      return stats;
+    });
+
+    var tree = assetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
+      replaceExtensions: ['html', 'js', 'css'],
+      generateRailsManifest: true
+    });
+
+    builder = new broccoli.Builder(tree);
+    return builder.build().then(function(graph) {
+      confirmOutput(graph.directory, sourcePath + '/output');
+      fs.statSync.restore()
+    });
+  });
+
+  it('merges the generated manifest with the sprockets manifest', function(){
+    var sourcePath = 'tests/fixtures/existing-manifest';
+
+    var original = fs.statSync;
+    var date = new Date(Date.UTC(2015, 0, 1, 8));
+
+    sinon.stub(fs, 'statSync', function (path) {
+      var stats = original.apply(this, arguments);
+      stats.mtime = date;
+
+      return stats;
+    });
+
+    var tree = assetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
+      replaceExtensions: ['html', 'js', 'css'],
+      generateRailsManifest: true
+    });
+
+    builder = new broccoli.Builder(tree);
+    return builder.build().then(function(graph) {
+      confirmOutput(graph.directory, sourcePath + '/output');
+      fs.statSync.restore()
     });
   });
 });
