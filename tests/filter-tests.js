@@ -4,8 +4,8 @@ var crypto   = require('crypto');
 var assert   = require('assert');
 var walkSync = require('walk-sync');
 var broccoli = require('broccoli');
-var mergeTrees = require('broccoli-merge-trees');
-var assetRev = require('../lib/asset-rev');
+var MergeTrees = require('broccoli-merge-trees');
+var AssetRev = require('../lib/asset-rev');
 var sinon    = require('sinon');
 var builder;
 
@@ -41,12 +41,12 @@ describe('broccoli-asset-rev', function() {
   it('revs the assets and rewrites the source', function(){
     var sourcePath = 'tests/fixtures/basic';
 
-    var tree = assetRev(sourcePath + '/input', {
+    var node = new AssetRev(sourcePath + '/input', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css']
     });
 
-    builder = new broccoli.Builder(tree);
+    builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       confirmOutput(graph.directory, sourcePath + '/output');
     });
@@ -55,14 +55,14 @@ describe('broccoli-asset-rev', function() {
   it('revs the assets when it is not the first plugin', function () {
     var sourcePath = 'tests/fixtures/basic';
 
-    var merged = mergeTrees([sourcePath + '/input']);
+    var merged = new MergeTrees([sourcePath + '/input']);
 
-    var tree = assetRev(merged, {
+    var node = new AssetRev(merged, {
       extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css']
     });
 
-    builder = new broccoli.Builder(tree);
+    builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       confirmOutput(graph.directory, sourcePath + '/output');
     });
@@ -71,13 +71,13 @@ describe('broccoli-asset-rev', function() {
   it('generates a rails-style asset manifest if requested', function () {
     var sourcePath = 'tests/fixtures/basic';
 
-    var tree = assetRev(sourcePath + '/input', {
+    var node = new AssetRev(sourcePath + '/input', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif'],
       generateRailsManifest: true,
       replaceExtensions: ['html', 'js', 'css']
     });
 
-    builder = new broccoli.Builder(tree);
+    builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       var actualFiles = walkSync(graph.directory);
       var pathPresent = confirmPathPresent(actualFiles, /manifest-[0-9a-f]{32}.json/);
@@ -89,14 +89,14 @@ describe('broccoli-asset-rev', function() {
   it("doesn't fingerprint rails-style manifest if excluded", function () {
     var sourcePath = 'tests/fixtures/basic';
 
-    var tree = assetRev(sourcePath + '/input', {
+    var node = new AssetRev(sourcePath + '/input', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif'],
       exclude: ['manifest.json'],
       generateRailsManifest: true,
       replaceExtensions: ['html', 'js', 'css']
     });
 
-    builder = new broccoli.Builder(tree);
+    builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       var actualFiles = walkSync(graph.directory);
       var pathPresent = confirmPathPresent(actualFiles, /manifest.json/);
@@ -108,13 +108,13 @@ describe('broccoli-asset-rev', function() {
   it('will prepend if set', function () {
     var sourcePath = 'tests/fixtures/prepend';
 
-    var tree = assetRev(sourcePath + '/input', {
+    var node = new AssetRev(sourcePath + '/input', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css'],
       prepend: 'https://foobar.cloudfront.net/'
     });
 
-    builder = new broccoli.Builder(tree);
+    builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       confirmOutput(graph.directory, sourcePath + '/output');
     });
@@ -123,14 +123,14 @@ describe('broccoli-asset-rev', function() {
   it('skips fingerprint and prepends when set and customHash is null', function () {
     var sourcePath = 'tests/fixtures/prepend';
 
-    var tree = assetRev(sourcePath + '/input', {
+    var node = new AssetRev(sourcePath + '/input', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css'],
       prepend: 'https://foobar.cloudfront.net/',
       customHash: null
     });
 
-    builder = new broccoli.Builder(tree);
+    builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       confirmOutput(graph.directory, sourcePath + '/output-customHash-null');
     });
@@ -139,13 +139,13 @@ describe('broccoli-asset-rev', function() {
   it('skips fingerprint when customHash is null', function () {
     var sourcePath = 'tests/fixtures/customHash-null';
 
-    var tree = assetRev(sourcePath + '/input-output', {
+    var node = new AssetRev(sourcePath + '/input-output', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css'],
       customHash: null
     });
 
-    builder = new broccoli.Builder(tree);
+    builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       confirmOutput(graph.directory, sourcePath + '/input-output');
     });
@@ -154,12 +154,12 @@ describe('broccoli-asset-rev', function() {
   it('replaces the correct match for the file extension', function () {
     var sourcePath = 'tests/fixtures/extensions';
 
-    var tree = assetRev(sourcePath + '/input', {
+    var node = new AssetRev(sourcePath + '/input', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif', 'woff', 'woff2', 'ttf', 'svg', 'eot'],
       replaceExtensions: ['html', 'js' ,'css']
     });
 
-    builder = new broccoli.Builder(tree);
+    builder = new broccoli.Builder(node);
     return builder.build().then(function (graph) {
       confirmOutput(graph.directory, sourcePath + '/output');
     });
@@ -168,13 +168,13 @@ describe('broccoli-asset-rev', function() {
   it('uses customHash string value', function(){
     var sourcePath = 'tests/fixtures/customHash-simple';
 
-    var tree = assetRev(sourcePath + '/input', {
+    var node = new AssetRev(sourcePath + '/input', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif'],
       replaceExtensions: ['html', 'js', 'css'],
       customHash: 'test'
     });
 
-    builder = new broccoli.Builder(tree);
+    builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       confirmOutput(graph.directory, sourcePath + '/output');
     });
@@ -183,7 +183,7 @@ describe('broccoli-asset-rev', function() {
   it('uses customHash function value', function(){
     var sourcePath = 'tests/fixtures/customHash-function';
 
-    var tree = assetRev(sourcePath + '/input', {
+    var node = new AssetRev(sourcePath + '/input', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif'],
       replaceExtensions: ['html', 'js', 'css'],
       customHash: function(buf) {
@@ -193,7 +193,7 @@ describe('broccoli-asset-rev', function() {
       }
     });
 
-    builder = new broccoli.Builder(tree);
+    builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       confirmOutput(graph.directory, sourcePath + '/output');
     });
@@ -211,13 +211,13 @@ describe('broccoli-asset-rev', function() {
       return stats;
     });
 
-    var tree = assetRev(sourcePath + '/input', {
+    var node = new AssetRev(sourcePath + '/input', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css'],
       generateRailsManifest: true
     });
 
-    builder = new broccoli.Builder(tree);
+    builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       confirmOutput(graph.directory, sourcePath + '/output');
       fs.statSync.restore()
@@ -237,13 +237,13 @@ describe('broccoli-asset-rev', function() {
       return stats;
     });
 
-    var tree = assetRev(sourcePath + '/input', {
+    var node = new AssetRev(sourcePath + '/input', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css'],
       generateRailsManifest: true
     });
 
-    builder = new broccoli.Builder(tree);
+    builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       confirmOutput(graph.directory, sourcePath + '/output');
       fs.statSync.restore()

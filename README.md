@@ -25,9 +25,9 @@ npm install broccoli-asset-rev --save-dev
 ## Usage
 
 ```js
-var assetRev = require('broccoli-asset-rev');
+var AssetRev = require('broccoli-asset-rev');
 
-var assetTree = assetRev(tree, {
+var assetNode = new AssetRev(node, {
   extensions: ['js', 'css', 'png', 'jpg', 'gif'],
   exclude: ['fonts/169929'],
   replaceExtensions: ['html', 'js', 'css'],
@@ -43,7 +43,7 @@ var assetTree = assetRev(tree, {
   - `prepend` - Default: `''` - A string to prepend to all of the assets. Useful for CDN urls like `https://subdomain.cloudfront.net/`
   - `generateRailsManifest` - Default: none - If true, will generate a `manifest.json` to be used by Sprockets for the Rails Asset Pipeline. The manifest will be fingerprinted by default but this can be avoided by adding `'manifest.json'` to the `exclude` list.
   - `customHash` - Default: none - If set, overrides the md5 checksum calculation with the result of calling `customHash(buffer, pathToFile)`. If it is not a `function`, `customHash` is used as the hash value. If it is set to `null`, fingerprinting is skipped and only prepending occurs.
-  - `generateAssetMap` - Default: false. If true, will generate a `assetMap.json` file in a `assets` directory on the output tree. This file contains a mapping of the original asset name to the fingerprinted asset, like the following:
+  - `generateAssetMap` - Default: false. If true, will generate a `assetMap.json` file in a `assets` directory on the output node. This file contains a mapping of the original asset name to the fingerprinted asset, like the following:
 
 ```js
 {
