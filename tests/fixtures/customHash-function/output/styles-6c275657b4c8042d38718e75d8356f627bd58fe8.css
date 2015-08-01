@@ -1,11 +1,11 @@
 .sample-img {
   width: 50px;
   height: 50px;
-  background-image: url(images/sample-a3eba6f18695684fa6df5d80f157d82277e93172.png);
+  background-image: url(images/sample-2c57d0d404fa94fd22023242d1f36faaaa7ad792.png);
 }
 
 .sample-img2 {
   width: 50px;
   height: 50px;
-  background-image: url('images/sample-a3eba6f18695684fa6df5d80f157d82277e93172.png');
+  background-image: url('images/sample-2c57d0d404fa94fd22023242d1f36faaaa7ad792.png');
 }
