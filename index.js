@@ -12,7 +12,7 @@ module.exports = {
       prepend: '',
       replaceExtensions: ['html', 'css', 'js']
     }
-  
+
     // Allow simply setting { fingerprint: false } as a shortcut option to disable
     if (this.app.options.fingerprint === false) {
       this.options = this.app.options.fingerprint = { enabled: false };
