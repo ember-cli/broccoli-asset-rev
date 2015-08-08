@@ -32,6 +32,7 @@
   "dependencies": {
     "broccoli-asset-rewrite": "^1.0.9",
     "broccoli-filter": "~0.2.0",
+    "json-stable-stringify": "^1.0.0",
     "rsvp": "~3.0.6"
   },
   "devDependencies": {
