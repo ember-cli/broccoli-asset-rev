@@ -31,7 +31,7 @@
   "homepage": "https://github.com/rickharrison/broccoli-asset-rev",
   "dependencies": {
     "broccoli-asset-rewrite": "^1.0.9",
-    "broccoli-filter": "~0.2.0",
+    "broccoli-filter": "^1.0.0",
     "json-stable-stringify": "^1.0.0",
     "rsvp": "~3.0.6"
   },
