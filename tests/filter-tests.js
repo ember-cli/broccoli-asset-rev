@@ -80,7 +80,7 @@ describe('broccoli-asset-rev', function() {
     builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       var actualFiles = walkSync(graph.directory);
-      var pathPresent = confirmPathPresent(actualFiles, /manifest-[0-9a-f]{32}.json/);
+      var pathPresent = confirmPathPresent(actualFiles, /manifest-[0-9a-f]{32}\.json/);
 
       assert(pathPresent, "manifest file not found");
     });
@@ -99,9 +99,46 @@ describe('broccoli-asset-rev', function() {
     builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       var actualFiles = walkSync(graph.directory);
-      var pathPresent = confirmPathPresent(actualFiles, /manifest.json/);
+      var pathPresent = confirmPathPresent(actualFiles, /manifest\.json/);
 
       assert(pathPresent, "manifest file not found");
+    });
+  });
+
+  it('generates an asset map if requested', function () {
+    var sourcePath = 'tests/fixtures/basic';
+
+    var node = new AssetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      generateAssetMap: true,
+      replaceExtensions: ['html', 'js', 'css']
+    });
+
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function(graph) {
+      var actualFiles = walkSync(graph.directory);
+      var pathPresent = confirmPathPresent(actualFiles, /assetMap\.json/);
+
+      assert(pathPresent, "asset map file not found");
+    });
+  });
+
+  it("fingerprints the asset map if requested", function () {
+    var sourcePath = 'tests/fixtures/basic';
+
+    var node = new AssetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      fingerprintAssetMap: true,
+      generateAssetMap: true,
+      replaceExtensions: ['html', 'js', 'css']
+    });
+
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function(graph) {
+      var actualFiles = walkSync(graph.directory);
+      var pathPresent = confirmPathPresent(actualFiles, /assetMap-[0-9a-f]{32}\.json/);
+
+      assert(pathPresent, "fingerprinted asset map file not found");
     });
   });
 
