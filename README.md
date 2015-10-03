@@ -42,9 +42,11 @@ var assetNode = new AssetRev(node, {
   - `replaceExtensions` - Default: `['html', 'css', 'js']` - The file types to replace source code with new checksum file names.
   - `prepend` - Default: `''` - A string to prepend to all of the assets. Useful for CDN urls like `https://subdomain.cloudfront.net/`
   - `generateRailsManifest` - Default: none - If true, will generate a `manifest.json` to be used by Sprockets for the Rails Asset Pipeline. The manifest will be fingerprinted by default but this can be avoided by adding `'manifest.json'` to the `exclude` list.
+  - `railsManifestPath` - Default: `'assets/manifest-HASH.json'` - The path in the destination folder to store the Rails manifest. Only for the default value, `HASH` will be replace with the fingerprint of the file.
   - `customHash` - Default: none - If set, overrides the md5 checksum calculation with the result of calling `customHash(buffer, pathToFile)`. If it is not a `function`, `customHash` is used as the hash value. If it is set to `null`, fingerprinting is skipped and only prepending occurs.
   - `generateAssetMap` - Default: false. If true, will generate a `assetMap.json` file in a `assets` directory on the output node. This file contains a mapping of the original asset name to the fingerprinted asset, like the following:
-
+  - `assetMapPath` - Default: `'assets/assetMap-HASH.json'` - The path in the destination folder to store the `assetMap.json` in. Only for the default value, `HASH` will be replace with the fingerprint of the file.
+  
 ```js
 {
 	assets: {
