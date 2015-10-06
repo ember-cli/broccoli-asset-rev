@@ -1,0 +1,20 @@
+{
+  "assets": {
+    "application.js": "application-058eb02dfd08e347c40ae14e9f2e4600.js",
+    "foobar.js": "foobar-058eb02dfd08e347c40ae14e9f2e4600.js"
+  },
+  "files": {
+    "application-058eb02dfd08e347c40ae14e9f2e4600.js": {
+      "digest": "058eb02dfd08e347c40ae14e9f2e4600",
+      "logical_path": "application.js",
+      "mtime": "2015-01-01T08:00:00.000Z",
+      "size": 28
+    },
+    "foobar-058eb02dfd08e347c40ae14e9f2e4600.js": {
+      "digest": "058eb02dfd08e347c40ae14e9f2e4600",
+      "logical_path": "foobar.js",
+      "mtime": "2015-01-01T08:00:00.000Z",
+      "size": 28
+    }
+  }
+}
