@@ -105,6 +105,27 @@ describe('broccoli-asset-rev', function() {
     });
   });
 
+  it("uses a custom path for the rails-style manifest", function () {
+    var sourcePath = 'tests/fixtures/basic';
+
+    var node = new AssetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      generateRailsManifest: true,
+      railsManifestPath: 'otherManifest.json',
+      replaceExtensions: ['html', 'js', 'css']
+    });
+
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function(graph) {
+      var actualFiles = walkSync(graph.directory);
+      var defaultPathNotPresent = !confirmPathPresent(actualFiles, /manifest-[0-9a-f]{32}\.json/);
+      var pathPresent = confirmPathPresent(actualFiles, /otherManifest\.json/);
+
+      assert(pathPresent, "custom manifest file found");
+      assert(defaultPathNotPresent, "default fingerprinted manifest file not found");
+    });
+  });
+
   it('generates an asset map if requested', function () {
     var sourcePath = 'tests/fixtures/basic';
 
@@ -139,6 +160,28 @@ describe('broccoli-asset-rev', function() {
       var pathPresent = confirmPathPresent(actualFiles, /assetMap-[0-9a-f]{32}\.json/);
 
       assert(pathPresent, "fingerprinted asset map file not found");
+    });
+  });
+
+  it("uses a custom path for the asset map", function () {
+    var sourcePath = 'tests/fixtures/basic';
+
+    var node = new AssetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      fingerprintAssetMap: true,
+      generateAssetMap: true,
+      assetMapPath: 'otherAssetMap.json',
+      replaceExtensions: ['html', 'js', 'css']
+    });
+
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function(graph) {
+      var actualFiles = walkSync(graph.directory);
+      var defaultPathNotPresent = !confirmPathPresent(actualFiles, /assetMap-[0-9a-f]{32}\.json/);
+      var pathPresent = confirmPathPresent(actualFiles, /otherAssetMap\.json/);
+
+      assert(pathPresent, "custom asset map file found");
+      assert(defaultPathNotPresent, "default fingerprinted asset map file not found");
     });
   });
 
