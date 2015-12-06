@@ -105,6 +105,24 @@ describe('broccoli-asset-rev', function() {
     });
   });
 
+  it("accepts a glob as exclude parameter", function() {
+    var sourcePath = 'tests/fixtures/basic';
+
+    var node = new AssetRev(sourcePath + '/input', {
+      extensions: ['png'],
+      exclude: ['**/*.png'],
+      replaceExtensions: ['png'],
+    });
+
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function(graph) {
+      var actualFiles = walkSync(graph.directory);
+
+      assert(confirmPathPresent(actualFiles, /sample\.png/));
+      assert(confirmPathPresent(actualFiles, /favicon\.png/));
+    });
+  });
+
   it("uses a custom path for the rails-style manifest", function () {
     var sourcePath = 'tests/fixtures/basic';
 
