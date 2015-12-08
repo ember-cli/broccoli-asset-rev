@@ -56,7 +56,6 @@ var assetNode = new AssetRev(node, {
 }
 ```
   - `fingerprintAssetMap` - Default: false. If true, will fingerprint `assetMap.json`.
-  - `ignore` - Default: `[]` - An array of strings.  If a filename contains any item in the ignore array, the contents of the file will not be processed for fingerprinting.
   - `annotation` - Default: null. A human-readable description for this plugin instance.
 
 ## Ember CLI addon usage
