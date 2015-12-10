@@ -105,7 +105,7 @@ describe('broccoli-asset-rev', function() {
     });
   });
 
-  it('accepts a string as exclude parameter', function () {
+  it('accepts an array of strings as exclude parameter', function () {
     var sourcePath = 'tests/fixtures/exclude';
 
     var node = new AssetRev(sourcePath + '/input', {
@@ -120,7 +120,7 @@ describe('broccoli-asset-rev', function() {
     });
   });
 
-  it("accepts a glob as exclude parameter", function() {
+  it("accepts an array of globs as exclude parameter", function() {
     var sourcePath = 'tests/fixtures/exclude';
 
     var node = new AssetRev(sourcePath + '/input', {
