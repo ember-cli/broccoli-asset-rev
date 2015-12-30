@@ -77,3 +77,5 @@ var app = new EmberApp({
   - `extensions` - Default: `['js', 'css', 'png', 'jpg', 'gif', 'map']` - The file types to add md5 checksums.
   - `prepend` - Default: `''` - A string to prepend to all of the assets. Useful for CDN urls like `https://subdomain.cloudfront.net/`
   - `replaceExtensions` - Default: `['html', 'css', 'js']` - The file types to replace source code with new checksum file names.
+
+[![ghit.me](https://ghit.me/badge.svg?repo=rickharrison/broccoli-asset-rev)](https://ghit.me/repo/rickharrison/broccoli-asset-rev)
