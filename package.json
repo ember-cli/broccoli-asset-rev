@@ -7,7 +7,8 @@
     "main": "index.js"
   },
   "scripts": {
-    "test": "mocha tests"
+    "test": "mocha tests",
+    "test:cover": "istanbul cover ./node_modules/mocha/bin/_mocha tests"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,8 @@
   "devDependencies": {
     "broccoli": "^0.13.3",
     "broccoli-merge-trees": "^0.2.1",
+    "codecov": "^1.0.1",
+    "istanbul": "^0.4.1",
     "mocha": "^2.0.1",
     "sinon": "^1.14.1",
     "walk-sync": "^0.1.3"
