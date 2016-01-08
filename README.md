@@ -1,5 +1,9 @@
 #broccoli-asset-rev
 
+![Build Status](https://circleci.com/gh/rickharrison/broccoli-asset-rev.svg?style=shield)
+[![codecov.io](https://codecov.io/github/rickharrison/broccoli-asset-rev/coverage.svg?branch=master)](https://codecov.io/github/rickharrison/broccoli-asset-rev?branch=master)
+[![npm](https://img.shields.io/npm/v/npm.svg)](https://www.npmjs.com/package/broccoli-asset-rev)
+
 [Broccoli](https://github.com/broccolijs/broccoli) plugin to add fingerprint checksums to your files and update the source to reflect the new filenames.
 
 Turns
@@ -46,7 +50,7 @@ var assetNode = new AssetRev(node, {
   - `customHash` - Default: none - If set, overrides the md5 checksum calculation with the result of calling `customHash(buffer, pathToFile)`. If it is not a `function`, `customHash` is used as the hash value. If it is set to `null`, fingerprinting is skipped and only prepending occurs.
   - `generateAssetMap` - Default: false. If true, will generate a `assetMap.json` file in a `assets` directory on the output node. This file contains a mapping of the original asset name to the fingerprinted asset, like the following:
   - `assetMapPath` - Default: `'assets/assetMap-HASH.json'` - The path in the destination folder to store the `assetMap.json` in. Only for the default value, `HASH` will be replace with the fingerprint of the file.
-  
+
 ```js
 {
 	assets: {
