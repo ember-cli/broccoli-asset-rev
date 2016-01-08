@@ -41,7 +41,7 @@ describe('broccoli-asset-rev', function() {
   it('revs the assets and rewrites the source', function(){
     var sourcePath = 'tests/fixtures/basic';
 
-    var node = new AssetRev(sourcePath + '/input', {
+    var node = AssetRev(sourcePath + '/input', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css']
     });
