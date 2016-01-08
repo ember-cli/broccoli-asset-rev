@@ -1,8 +1,8 @@
 #broccoli-asset-rev
 
-![Build Status](https://circleci.com/gh/rickharrison/broccoli-asset-rev.svg?style=shield)
-[![codecov.io](https://codecov.io/github/rickharrison/broccoli-asset-rev/coverage.svg?branch=master)](https://codecov.io/github/rickharrison/broccoli-asset-rev?branch=master)
-[![npm](https://img.shields.io/npm/v/npm.svg)](https://www.npmjs.com/package/broccoli-asset-rev)
+[![Build Status](https://circleci.com/gh/rickharrison/broccoli-asset-rev.svg?style=shield)](https://circleci.com/gh/rickharrison/broccoli-asset-rev)
+[![codecov.io](https://codecov.io/github/rickharrison/broccoli-asset-rev/coverage.svg?branch=master&precision=2)](https://codecov.io/github/rickharrison/broccoli-asset-rev?branch=master)
+[![npm](https://img.shields.io/npm/v/broccoli-asset-rev.svg)](https://www.npmjs.com/package/broccoli-asset-rev)
 
 [Broccoli](https://github.com/broccolijs/broccoli) plugin to add fingerprint checksums to your files and update the source to reflect the new filenames.
 
