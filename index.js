@@ -1,17 +1,18 @@
 var path = require('path');
 
 var assetRev = require('./lib/asset-rev');
+var defaults = require('./lib/default-options');
 
 module.exports = {
   name: 'broccoli-asset-rev',
   initializeOptions: function() {
     var defaultOptions = {
       enabled: this.app.env === 'production',
-      exclude: [],
-      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
-      prepend: '',
-      replaceExtensions: ['html', 'css', 'js']
-    }
+      exclude: defaults.exclude,
+      extensions: defaults.extensions,
+      prepend: defaults.prepend,
+      replaceExtensions: defaults.replaceExtensions
+    };
 
     // Allow simply setting { fingerprint: false } as a shortcut option to disable
     if (this.app.options.fingerprint === false) {
