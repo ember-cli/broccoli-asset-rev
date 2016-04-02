@@ -5,9 +5,24 @@ var assert   = require('assert');
 var walkSync = require('walk-sync');
 var broccoli = require('broccoli');
 var MergeTrees = require('broccoli-merge-trees');
-var AssetRev = require('../lib/asset-rev');
+var _AssetRev = require('../lib/asset-rev');
 var sinon    = require('sinon');
 var builder;
+
+// NOTE: don't persist broccoli-persistent-filter's cache during tests.
+// Because many fixture dirs share the same file structure, and tests are setup
+// in such a way that the parent of the fixture dir isn't passed to the filter,
+// having one test populate the cache sometimes breaks it for subsequent tests
+// that need to process a file with the same name and contents in a sibilng
+// fixture directory. Besides, that the persistent cache works correctly,
+// should be tested in broccoli-persistent-filter, not here.
+function AssetRev(inputTree, options) {
+  if (options.persist === undefined) {
+    options.persist = false;
+  }
+
+  return new _AssetRev(inputTree, options);
+}
 
 function confirmOutput(actualPath, expectedPath) {
   var actualFiles = walkSync(actualPath);
