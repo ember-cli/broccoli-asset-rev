@@ -1,6 +1,5 @@
 var path = require('path');
 
-var assetRev = require('./lib/asset-rev');
 var defaults = require('./lib/default-options');
 
 module.exports = {
@@ -29,7 +28,7 @@ module.exports = {
   },
   postprocessTree: function (type, tree) {
     if (type === 'all' && this.options.enabled) {
-      tree = assetRev(tree, this.options);
+      tree = require('./lib/asset-rev')(tree, this.options);
     }
 
     return tree;
