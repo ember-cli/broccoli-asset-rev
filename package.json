@@ -3,6 +3,10 @@
   "version": "2.4.5",
   "description": "broccoli asset revisions (fingerprint)",
   "main": "lib/asset-rev.js",
+  "files": [
+    "lib/",
+    "index.js"
+  ],
   "ember-addon": {
     "main": "index.js"
   },
