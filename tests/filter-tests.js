@@ -9,19 +9,36 @@ var AssetRev = require('../lib/asset-rev');
 var sinon    = require('sinon');
 var builder;
 
-function confirmOutput(actualPath, expectedPath) {
+function md5Hash(buf) {
+  var md5 = crypto.createHash('md5');
+  md5.update(buf);
+  return md5.digest('hex');
+}
+function sha1Hash(buf) {
+  var sha1 = crypto.createHash('sha1');
+  sha1.update(buf);
+  return sha1.digest('hex');
+}
+
+function confirmOutput(actualPath, expectedPath, hashFn) {
   var actualFiles = walkSync(actualPath);
   var expectedFiles = walkSync(expectedPath);
+  hashFn = hashFn || md5Hash;
 
   assert.deepEqual(actualFiles, expectedFiles, 'files output should be the same as those input');
 
   expectedFiles.forEach(function(relativePath) {
     if (relativePath.slice(-1) === '/') { return; }
 
-    var actual   = fs.readFileSync(path.join(actualPath, relativePath), { encoding: 'utf8'});
-    var expected = fs.readFileSync(path.join(expectedPath, relativePath), { encoding: 'utf8' });
+    var actual   = fs.readFileSync(path.join(actualPath, relativePath), { encoding: 'binary'});
+    var expected = fs.readFileSync(path.join(expectedPath, relativePath), { encoding: 'binary' });
 
     assert.equal(actual, expected, relativePath + ': does not match expected output');
+
+    var m = relativePath.match(/-([0-9a-f]+)\./i);
+    if (m) {
+      assert.equal(m[1], hashFn(actual), relativePath + ': file hash does not match fingerprint');
+    }
   });
 }
 
@@ -159,8 +176,9 @@ describe('broccoli-asset-rev', function() {
   it('generates an asset map if requested', function () {
     var sourcePath = 'tests/fixtures/basic';
 
+    var extensions = ['js', 'css', 'png', 'jpg', 'gif'];
     var node = new AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: extensions,
       generateAssetMap: true,
       replaceExtensions: ['html', 'js', 'css']
     });
@@ -171,6 +189,30 @@ describe('broccoli-asset-rev', function() {
       var pathPresent = confirmPathPresent(actualFiles, /assetMap\.json/);
 
       assert(pathPresent, "asset map file not found");
+
+      var assetMap = JSON.parse(
+        fs.readFileSync(
+          path.join(graph.directory, 'assets/assetMap.json'),
+          { encoding: 'utf8'}
+        )
+      );
+
+      var mappedFiles = actualFiles.filter(function(name) {
+        if (name.endsWith('assetMap.json')) return true;
+        if (-1 === extensions.findIndex(function(n) { return name.endsWith(n); })) return false;
+        return fs.statSync(path.join(graph.directory, name)).isFile();
+      });
+      for (var k in assetMap.assets) {
+        if (Object.prototype.hasOwnProperty.call(assetMap.assets, k)) {
+          var assetFile = assetMap.assets[k];
+          assert(false === /-([0-9a-f]+)\./i.test(k), k + ': mapped asset key contains fingerprinted file?');
+
+          var mappedFileIndex = mappedFiles.indexOf(assetFile);
+          assert(mappedFileIndex >= 0, k + ': unexpected entry in asset map');
+          mappedFiles.splice(mappedFileIndex, 1);
+        }
+      }
+      assert(0 === mappedFiles.length, 'One or more files were not mentioned in the asset map - ' + mappedFiles.join(', '));
     });
   });
 
@@ -296,16 +338,12 @@ describe('broccoli-asset-rev', function() {
     var node = new AssetRev(sourcePath + '/input', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif'],
       replaceExtensions: ['html', 'js', 'css'],
-      customHash: function(buf) {
-        var sha1 = crypto.createHash('sha1');
-        sha1.update(buf);
-        return sha1.digest('hex');
-      }
+      customHash: sha1Hash
     });
 
     builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
-      confirmOutput(graph.directory, sourcePath + '/output');
+      confirmOutput(graph.directory, sourcePath + '/output', sha1Hash);
     });
   });
 
