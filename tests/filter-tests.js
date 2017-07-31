@@ -198,9 +198,13 @@ describe('broccoli-asset-rev', function() {
       );
 
       var mappedFiles = actualFiles.filter(function(name) {
-        if (name.endsWith('assetMap.json')) return true;
-        if (-1 === extensions.findIndex(function(n) { return name.endsWith(n); })) return false;
-        return fs.statSync(path.join(graph.directory, name)).isFile();
+        if (-1 !== name.lastIndexOf('assetMap.json')) return true;
+        for (var i = 0; i < extensions.length; ++i) {
+          if (-1 !== name.lastIndexOf(extensions[i])) {
+            return fs.statSync(path.join(graph.directory, name)).isFile();
+          }
+        }
+        return false;
       });
       for (var k in assetMap.assets) {
         if (Object.prototype.hasOwnProperty.call(assetMap.assets, k)) {
