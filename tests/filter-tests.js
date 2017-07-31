@@ -30,10 +30,10 @@ function confirmOutput(actualPath, expectedPath, hashFn) {
   expectedFiles.forEach(function(relativePath) {
     if (relativePath.slice(-1) === '/') { return; }
 
-    var actual   = fs.readFileSync(path.join(actualPath, relativePath), { encoding: 'binary'});
-    var expected = fs.readFileSync(path.join(expectedPath, relativePath), { encoding: 'binary' });
+    var actual   = fs.readFileSync(path.join(actualPath, relativePath), { encoding: null });
+    var expected = fs.readFileSync(path.join(expectedPath, relativePath), { encoding: null });
 
-    assert.equal(actual, expected, relativePath + ': does not match expected output');
+    assert(0 === actual.compare(expected), relativePath + ': does not match expected output');
 
     var m = relativePath.match(/-([0-9a-f]+)\./i);
     if (m) {
