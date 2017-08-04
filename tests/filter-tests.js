@@ -59,7 +59,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/basic';
 
     var node = AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css']
     });
 
@@ -75,7 +75,7 @@ describe('broccoli-asset-rev', function() {
     var merged = new MergeTrees([sourcePath + '/input']);
 
     var node = new AssetRev(merged, {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css']
     });
 
@@ -89,7 +89,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/basic';
 
     var node = new AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif'],
       generateRailsManifest: true,
       replaceExtensions: ['html', 'js', 'css']
     });
@@ -107,7 +107,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/basic';
 
     var node = new AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif'],
       exclude: ['manifest.json'],
       generateRailsManifest: true,
       replaceExtensions: ['html', 'js', 'css']
@@ -156,7 +156,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/basic';
 
     var node = new AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif'],
       generateRailsManifest: true,
       railsManifestPath: 'otherManifest.json',
       replaceExtensions: ['html', 'js', 'css']
@@ -176,7 +176,7 @@ describe('broccoli-asset-rev', function() {
   it('generates an asset map if requested', function () {
     var sourcePath = 'tests/fixtures/basic';
 
-    var extensions = ['js', 'css', 'png', 'jpg', 'gif'];
+    var extensions = ['js', 'json', 'css', 'png', 'jpg', 'gif'];
     var node = new AssetRev(sourcePath + '/input', {
       extensions: extensions,
       generateAssetMap: true,
@@ -224,7 +224,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/basic';
 
     var node = new AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif'],
       fingerprintAssetMap: true,
       generateAssetMap: true,
       replaceExtensions: ['html', 'js', 'css']
@@ -243,7 +243,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/basic';
 
     var node = new AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif'],
       fingerprintAssetMap: true,
       generateAssetMap: true,
       assetMapPath: 'otherAssetMap.json',
