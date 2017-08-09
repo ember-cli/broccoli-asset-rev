@@ -137,6 +137,21 @@ describe('broccoli-asset-rev', function() {
     });
   });
 
+  it('accepts an array of strings as exclude parameter', function () {
+    var sourcePath = 'tests/fixtures/exclude';
+
+    var node = new AssetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'ttf'],
+      exclude: ['fonts'],
+      replaceExtensions: ['html', 'js', 'css']
+    });
+
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function(graph) {
+      confirmOutput(graph.directory, sourcePath + '/output');
+    });
+  });
+
   it("accepts an array of globs as exclude parameter", function() {
     var sourcePath = 'tests/fixtures/exclude';
 
