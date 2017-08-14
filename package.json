@@ -38,7 +38,7 @@
     "broccoli-asset-rewrite": "^1.1.0",
     "broccoli-filter": "^1.2.2",
     "json-stable-stringify": "^1.0.0",
-    "matcher-collection": "^1.0.1",
+    "minimatch": "^3.0.4",
     "rsvp": "^3.0.6"
   },
   "devDependencies": {

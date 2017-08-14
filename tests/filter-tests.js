@@ -9,19 +9,36 @@ var AssetRev = require('../lib/asset-rev');
 var sinon    = require('sinon');
 var builder;
 
-function confirmOutput(actualPath, expectedPath) {
+function md5Hash(buf) {
+  var md5 = crypto.createHash('md5');
+  md5.update(buf);
+  return md5.digest('hex');
+}
+function sha1Hash(buf) {
+  var sha1 = crypto.createHash('sha1');
+  sha1.update(buf);
+  return sha1.digest('hex');
+}
+
+function confirmOutput(actualPath, expectedPath, hashFn) {
   var actualFiles = walkSync(actualPath);
   var expectedFiles = walkSync(expectedPath);
+  hashFn = hashFn || md5Hash;
 
   assert.deepEqual(actualFiles, expectedFiles, 'files output should be the same as those input');
 
   expectedFiles.forEach(function(relativePath) {
     if (relativePath.slice(-1) === '/') { return; }
 
-    var actual   = fs.readFileSync(path.join(actualPath, relativePath), { encoding: 'utf8'});
-    var expected = fs.readFileSync(path.join(expectedPath, relativePath), { encoding: 'utf8' });
+    var actual   = fs.readFileSync(path.join(actualPath, relativePath), { encoding: null });
+    var expected = fs.readFileSync(path.join(expectedPath, relativePath), { encoding: null });
 
-    assert.equal(actual, expected, relativePath + ': does not match expected output');
+    assert(0 === actual.compare(expected), relativePath + ': does not match expected output');
+
+    var m = relativePath.match(/-([0-9a-f]+)\./i);
+    if (m) {
+      assert.equal(m[1], hashFn(actual), relativePath + ': file hash does not match fingerprint');
+    }
   });
 }
 
@@ -42,7 +59,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/basic';
 
     var node = AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css']
     });
 
@@ -58,7 +75,7 @@ describe('broccoli-asset-rev', function() {
     var merged = new MergeTrees([sourcePath + '/input']);
 
     var node = new AssetRev(merged, {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif', 'map'],
       replaceExtensions: ['html', 'js', 'css']
     });
 
@@ -72,7 +89,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/basic';
 
     var node = new AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif'],
       generateRailsManifest: true,
       replaceExtensions: ['html', 'js', 'css']
     });
@@ -90,7 +107,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/basic';
 
     var node = new AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif'],
       exclude: ['manifest.json'],
       generateRailsManifest: true,
       replaceExtensions: ['html', 'js', 'css']
@@ -120,6 +137,21 @@ describe('broccoli-asset-rev', function() {
     });
   });
 
+  it('accepts an array of strings as exclude parameter', function () {
+    var sourcePath = 'tests/fixtures/exclude';
+
+    var node = new AssetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'ttf'],
+      exclude: ['fonts'],
+      replaceExtensions: ['html', 'js', 'css']
+    });
+
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function(graph) {
+      confirmOutput(graph.directory, sourcePath + '/output');
+    });
+  });
+
   it("accepts an array of globs as exclude parameter", function() {
     var sourcePath = 'tests/fixtures/exclude';
 
@@ -139,7 +171,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/basic';
 
     var node = new AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif'],
       generateRailsManifest: true,
       railsManifestPath: 'otherManifest.json',
       replaceExtensions: ['html', 'js', 'css']
@@ -159,8 +191,9 @@ describe('broccoli-asset-rev', function() {
   it('generates an asset map if requested', function () {
     var sourcePath = 'tests/fixtures/basic';
 
+    var extensions = ['js', 'json', 'css', 'png', 'jpg', 'gif'];
     var node = new AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: extensions,
       generateAssetMap: true,
       replaceExtensions: ['html', 'js', 'css']
     });
@@ -171,6 +204,34 @@ describe('broccoli-asset-rev', function() {
       var pathPresent = confirmPathPresent(actualFiles, /assetMap\.json/);
 
       assert(pathPresent, "asset map file not found");
+
+      var assetMap = JSON.parse(
+        fs.readFileSync(
+          path.join(graph.directory, 'assets/assetMap.json'),
+          { encoding: 'utf8'}
+        )
+      );
+
+      var mappedFiles = actualFiles.filter(function(name) {
+        if (-1 !== name.lastIndexOf('assetMap.json')) return true;
+        for (var i = 0; i < extensions.length; ++i) {
+          if (-1 !== name.lastIndexOf(extensions[i])) {
+            return fs.statSync(path.join(graph.directory, name)).isFile();
+          }
+        }
+        return false;
+      });
+      for (var k in assetMap.assets) {
+        if (Object.prototype.hasOwnProperty.call(assetMap.assets, k)) {
+          var assetFile = assetMap.assets[k];
+          assert(false === /-([0-9a-f]+)\./i.test(k), k + ': mapped asset key contains fingerprinted file?');
+
+          var mappedFileIndex = mappedFiles.indexOf(assetFile);
+          assert(mappedFileIndex >= 0, k + ': unexpected entry in asset map');
+          mappedFiles.splice(mappedFileIndex, 1);
+        }
+      }
+      assert(0 === mappedFiles.length, 'One or more files were not mentioned in the asset map - ' + mappedFiles.join(', '));
     });
   });
 
@@ -178,7 +239,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/basic';
 
     var node = new AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif'],
       fingerprintAssetMap: true,
       generateAssetMap: true,
       replaceExtensions: ['html', 'js', 'css']
@@ -197,7 +258,7 @@ describe('broccoli-asset-rev', function() {
     var sourcePath = 'tests/fixtures/basic';
 
     var node = new AssetRev(sourcePath + '/input', {
-      extensions: ['js', 'css', 'png', 'jpg', 'gif'],
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif'],
       fingerprintAssetMap: true,
       generateAssetMap: true,
       assetMapPath: 'otherAssetMap.json',
@@ -296,16 +357,12 @@ describe('broccoli-asset-rev', function() {
     var node = new AssetRev(sourcePath + '/input', {
       extensions: ['js', 'css', 'png', 'jpg', 'gif'],
       replaceExtensions: ['html', 'js', 'css'],
-      customHash: function(buf) {
-        var sha1 = crypto.createHash('sha1');
-        sha1.update(buf);
-        return sha1.digest('hex');
-      }
+      customHash: sha1Hash
     });
 
     builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
-      confirmOutput(graph.directory, sourcePath + '/output');
+      confirmOutput(graph.directory, sourcePath + '/output', sha1Hash);
     });
   });
 
