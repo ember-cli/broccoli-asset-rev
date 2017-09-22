@@ -1,4 +1,4 @@
-#broccoli-asset-rev
+# broccoli-asset-rev
 
 [![Build Status](https://circleci.com/gh/rickharrison/broccoli-asset-rev.svg?style=shield)](https://circleci.com/gh/rickharrison/broccoli-asset-rev)
 [![codecov.io](https://codecov.io/github/rickharrison/broccoli-asset-rev/coverage.svg?branch=master&precision=2)](https://codecov.io/github/rickharrison/broccoli-asset-rev?branch=master)
@@ -64,6 +64,7 @@ var assetNode = new AssetRev(node, {
   - `annotation` - Default: null. A human-readable description for this plugin instance.
 
 ## Default settings
+
 The default [settings](https://github.com/rickharrison/broccoli-asset-rev/blob/master/lib/default-options.js) are available if needed in your application or addon via:
 `var broccoliAssetRevDefaults = require( 'broccoli-asset-rev/lib/default-options' );`
 
