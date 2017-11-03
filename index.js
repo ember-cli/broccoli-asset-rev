@@ -37,5 +37,10 @@ module.exports = {
     this.app = app;
     this.initializeOptions();
   },
-  treeFor: function() {}
-}
+  treeFor: function() {},
+
+  // ember-cli-fastboot uses the presence of this flag to give a
+  // helpful error if you're using an older version of this addon that
+  // doesn't know how to rewrite the fastboot manifest.
+  supportsFastboot: true
+};

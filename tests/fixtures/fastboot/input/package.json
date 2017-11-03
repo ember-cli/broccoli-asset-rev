@@ -1,0 +1,9 @@
+{
+  "fastboot": {
+    "manifest": {
+      "appFiles": ["assets/application.js"],
+      "htmlFile": "index.html",
+      "vendorFiles": []
+    }
+  }
+}

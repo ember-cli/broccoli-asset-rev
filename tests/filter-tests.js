@@ -416,4 +416,19 @@ describe('broccoli-asset-rev', function() {
       fs.statSync.restore()
     });
   });
+
+  it('rewrites the fastboot manifest', function(){
+    var sourcePath = 'tests/fixtures/fastboot';
+
+    var node = AssetRev(sourcePath + '/input', {
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map'],
+      replaceExtensions: ['html', 'js', 'css']
+    });
+
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function(graph) {
+      confirmOutput(graph.directory, sourcePath + '/output');
+    });
+  });
+
 });
