@@ -10,6 +10,7 @@ module.exports = {
       exclude: defaults.exclude,
       extensions: defaults.extensions,
       prepend: defaults.prepend,
+      extras: defaults.extras,
       replaceExtensions: defaults.replaceExtensions
     };
 
