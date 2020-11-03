@@ -88,3 +88,7 @@ var app = new EmberApp({
   - `replaceExtensions` - Default: `['html', 'css', 'js']` - The file types to replace source code with new checksum file names.
 
 [![ghit.me](https://ghit.me/badge.svg?repo=rickharrison/broccoli-asset-rev)](https://ghit.me/repo/rickharrison/broccoli-asset-rev)
+
+## Contributors
+
+Originally authored by [@rickharrison](https://github.com/rickharrison)
