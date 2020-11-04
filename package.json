@@ -45,7 +45,7 @@
   "devDependencies": {
     "broccoli": "^0.13.3",
     "broccoli-merge-trees": "^0.2.1",
-    "codecov": "^1.0.1",
+    "codecov": "^3.7.1",
     "istanbul": "^0.4.1",
     "mocha": "^2.0.1",
     "sinon": "^1.14.1",
