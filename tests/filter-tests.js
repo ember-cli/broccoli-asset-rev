@@ -213,7 +213,7 @@ describe('broccoli-asset-rev', function() {
       );
 
       var mappedFiles = actualFiles.filter(function(name) {
-        if (-1 !== name.lastIndexOf('assetMap.json')) return true;
+        if (-1 !== name.lastIndexOf('assetMap.json')) return false;
         for (var i = 0; i < extensions.length; ++i) {
           if (-1 !== name.lastIndexOf(extensions[i])) {
             return fs.statSync(path.join(graph.directory, name)).isFile();
