@@ -103,6 +103,20 @@ describe('broccoli-asset-rev', function() {
     });
   });
 
+  it.only('rewrites template literals with prepends correctly', function(){
+    var sourcePath = 'tests/fixtures/template-literal';
+
+    var node = AssetRev(sourcePath + '/input', {
+      extensions: ['js', 'json', 'css', 'png', 'jpg', 'gif', 'map'],
+      prepend: 'https://static.assets.com/ember/'
+    });
+
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function(graph) {
+      confirmOutput(graph.directory, sourcePath + '/output');
+    });
+  });
+
   it("doesn't fingerprint rails-style manifest if excluded", function () {
     var sourcePath = 'tests/fixtures/basic';
 
