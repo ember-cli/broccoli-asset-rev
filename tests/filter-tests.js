@@ -48,6 +48,17 @@ function confirmPathPresent(list, pattern) {
   });
 }
 
+function countPathMatches(list, pattern) {
+  const count = list.reduce((count, current) => {
+    if (current.search(pattern) !== -1) {
+      return count + 1;
+    }
+    return count;
+  }, 0)
+
+  return count;
+}
+
 describe('broccoli-asset-rev', function() {
   afterEach(function() {
     if (builder) {
@@ -201,9 +212,10 @@ describe('broccoli-asset-rev', function() {
     builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       var actualFiles = walkSync(graph.directory);
-      var pathPresent = confirmPathPresent(actualFiles, /assetMap\.json/);
+      const matches = countPathMatches(actualFiles, /assetMap\.json/);
 
-      assert(pathPresent, "asset map file not found");
+      assert((matches > 0), "asset map file not found");
+      assert((matches < 2), "more than 1 asset map found");
 
       var assetMap = JSON.parse(
         fs.readFileSync(
@@ -248,9 +260,10 @@ describe('broccoli-asset-rev', function() {
     builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       var actualFiles = walkSync(graph.directory);
-      var pathPresent = confirmPathPresent(actualFiles, /assetMap-[0-9a-f]{32}\.json/);
+      var matches = countPathMatches(actualFiles, /assetMap-[0-9a-f]{32}\.json/);
 
-      assert(pathPresent, "fingerprinted asset map file not found");
+      assert((matches > 0), "fingerprinted asset map file not found");
+      assert((matches < 2), "more than 1 asset map file found");
     });
   });
 
