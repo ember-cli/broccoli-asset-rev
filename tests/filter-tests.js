@@ -212,10 +212,9 @@ describe('broccoli-asset-rev', function() {
     builder = new broccoli.Builder(node);
     return builder.build().then(function(graph) {
       var actualFiles = walkSync(graph.directory);
-      const matches = countPathMatches(actualFiles, /assetMap\.json/);
+      var pathPresent = confirmPathPresent(actualFiles, /assetMap\.json/);
 
-      assert((matches > 0), "asset map file not found");
-      assert((matches < 2), "more than 1 asset map found");
+      assert(pathPresent, "asset map file not found");
 
       var assetMap = JSON.parse(
         fs.readFileSync(
